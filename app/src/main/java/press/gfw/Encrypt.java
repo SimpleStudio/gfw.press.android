@@ -17,8 +17,8 @@
  **/
 package press.gfw;
 
-import org.apache.commons.codec_.binary.Base64;
-import org.apache.commons.codec_.digest.DigestUtils;
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.codec.digest.DigestUtils;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
