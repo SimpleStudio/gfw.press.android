@@ -18,6 +18,7 @@
 package press.gfw;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.io.BufferedInputStream;
@@ -853,7 +854,7 @@ public class Encrypt {
 
         try {
 
-            return getSecretKey(DigestUtils.md5Hex(password.getBytes(CHARSET)));
+            return getSecretKey(new String(Hex.encodeHex(DigestUtils.md5(password.getBytes(CHARSET)))));
 
         } catch (UnsupportedEncodingException ex) {
 
@@ -885,10 +886,21 @@ public class Encrypt {
 
         }
 
-        byte[] bytes = Base64.decodeBase64(stringKey);
+        try {
 
-        return new SecretKeySpec(bytes, 0, bytes.length, "AES");
+            byte[] bytes = Base64.decodeBase64(stringKey.getBytes(CHARSET));
 
+            return new SecretKeySpec(bytes, 0, bytes.length, "AES");
+
+        } catch (UnsupportedEncodingException ex) {
+
+            log("使用SecretKey还原SecretKey出错：");
+
+            ex.printStackTrace();
+
+            return null;
+
+        }
     }
 
     /**
