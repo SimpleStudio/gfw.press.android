@@ -96,18 +96,37 @@ public class SettingsActivity extends CompatActivity {
         @Override
         public boolean onPreferenceChange(Preference preference, Object newValue) {
 
-            if ((boolean) newValue) {
+            if ("switch".equals(preference.getKey())) {
+                if ((boolean) newValue) {
 
-                log("开关打开");
+                    log("运行开关打开");
 
-                start();
+                    start();
 
-            } else {
+                } else {
 
-                log("开关关闭");
+                    log("运行开关关闭");
 
-                stop();
+                    stop();
 
+                }
+            }
+            if ("setup_proxy".equals(preference.getKey())) {
+                if ((boolean) newValue) {
+
+                    log("配置代理打开");
+
+                    // start auto proxy setup
+                    setupProxy();
+
+                } else {
+
+                    log("配置代理关闭");
+
+                    // start auto proxy clear
+                    clearProxy();
+
+                }
             }
 
             return true;
@@ -128,9 +147,6 @@ public class SettingsActivity extends CompatActivity {
             client.kill();
 
         }
-
-        // start auto proxy clear
-        clearProxy();
 
     }
 
@@ -248,8 +264,6 @@ public class SettingsActivity extends CompatActivity {
 
         client.start();
 
-        // start auto proxy setup
-        setupProxy();
     }
 
     private void setupProxy() {
@@ -371,6 +385,7 @@ public class SettingsActivity extends CompatActivity {
         setValueListener(findPreference("text_listen_port"));
 
         setSwitchListener(findPreference("switch"));
+        setSwitchListener(findPreference("setup_proxy"));
 
     }
 

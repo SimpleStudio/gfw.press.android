@@ -32,6 +32,8 @@
     <string name="pref_title_listen_port">本地端口</string>
     <string name="pref_default_listen_port">3128</string>
 
+    <string name="pref_title_setup_proxy">配置代理</string>
+
     <string name="_notification_title_template">: %1$s</string>
 
 </resources>
