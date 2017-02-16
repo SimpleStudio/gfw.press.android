@@ -25,8 +25,14 @@ import android.preference.PreferenceManager;
 import android.preference.SwitchPreference;
 import android.support.v7.app.ActionBar;
 
+import com.stericson.RootShell.exceptions.RootDeniedException;
+import com.stericson.RootShell.execution.Command;
+import com.stericson.RootTools.RootTools;
+
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.concurrent.TimeoutException;
 
 import press.gfw.Client;
 
@@ -122,6 +128,9 @@ public class SettingsActivity extends CompatActivity {
             client.kill();
 
         }
+
+        // start auto proxy clear
+        clearProxy();
 
     }
 
@@ -239,7 +248,38 @@ public class SettingsActivity extends CompatActivity {
 
         client.start();
 
+        // start auto proxy setup
+        setupProxy();
+    }
 
+    private void setupProxy() {
+        try {
+            String setupCmd = String.format("am start -n %s/tk.elevenk.proxysetter.MainActivity -e host %s -e port %s",
+                    getPackageName(),
+                    "127.0.0.1",
+                    "3128");
+            RootTools.getShell(false).add(new Command(0, setupCmd));
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        } catch (RootDeniedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void clearProxy() {
+        try {
+            String clearCmd = String.format("am start -n %s/tk.elevenk.proxysetter.MainActivity -e clear true",
+                    getPackageName());
+            RootTools.getShell(false).add(new Command(0, clearCmd));
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        } catch (RootDeniedException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
